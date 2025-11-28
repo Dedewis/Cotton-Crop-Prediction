@@ -1,0 +1,229 @@
+{
+  "en": {
+    "nav": {
+      "home": "Home",
+      "predict": "Predict",
+      "dashboard": "Dashboard",
+      "community": "Community",
+      "about": "About",
+      "contact": "Contact",
+      "logout": "Logout",
+      "login": "Login"
+    },
+    "home": {
+      "title": "Predict Your Cotton Yield",
+      "subtitle": "Maximize your harvest using our advanced AI-powered prediction model.",
+      "welcomeTitle": "Welcome to CropWise",
+      "welcomeDesc": "Cotton, known as 'white gold,' plays a vital role in farmers’ livelihood. CropWise analyzes climate and soil to give accurate yield predictions.",
+      "getStarted": "Get Started",
+      "state": "State",
+      "district": "District",
+      "predictYield": "Predict Yield"
+    },
+    "predict": {
+      "heading": "Enter Your Crop Details",
+      "state": "State",
+      "district": "District",
+      "submit": "Predict Now"
+    },
+    "dashboard": {
+      "heading": "Cotton Yield Dashboard",
+      "ndvi": "NDVI Analysis",
+      "rainfall": "Rainfall Distribution",
+      "soil": "Soil Moisture",
+      "priceTrend": "Market Price Trend"
+    },
+    "result": {
+      "heading": "Prediction Result",
+      "yield": "Predicted Yield",
+      "season": "Season Suitability",
+      "suitable": "Suitable",
+      "notSuitable": "Not Suitable",
+      "recommendations": "Recommendations"
+    },
+    "about": {
+      "title": "About CropWise",
+      "desc": "CropWise is an AI-driven system that predicts cotton crop yield based on NDVI, weather, rainfall, and soil moisture parameters."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "message": "Reach out for support or collaboration."
+    },
+    "login": {
+      "title": "Login to CropWise",
+      "email": "Email",
+      "password": "Password",
+      "button": "Login",
+      "signup": "Create an account"
+    },
+    "signup": {
+      "title": "Create Your Account",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "button": "Sign Up",
+      "login": "Already have an account?"
+    },
+    "community": {
+      "title": "Community Discussions",
+      "start": "Start a discussion",
+      "placeholder": "Write your message...",
+      "post": "Post"
+    },
+    "footer": {
+      "rights": "All rights reserved."
+    }
+  },
+
+  "hi": {
+    "nav": {
+      "home": "होम",
+      "predict": "पूर्वानुमान",
+      "dashboard": "डैशबोर्ड",
+      "community": "समुदाय",
+      "about": "हमारे बारे में",
+      "contact": "संपर्क",
+      "logout": "लॉगआउट",
+      "login": "लॉगिन"
+    },
+    "home": {
+      "title": "अपनी कपास की पैदावार का पूर्वानुमान लगाएँ",
+      "subtitle": "हमारे एआई मॉडल का उपयोग करके फसल उत्पादन को अधिकतम करें।",
+      "welcomeTitle": "CropWise में आपका स्वागत है",
+      "welcomeDesc": "कपास किसानों की आय का मुख्य स्रोत है। CropWise जलवायु और मिट्टी के आधार पर सटीक उत्पादन पूर्वानुमान प्रदान करता है।",
+      "getStarted": "शुरू करें",
+      "state": "राज्य",
+      "district": "जिला",
+      "predictYield": "उत्पादन पूर्वानुमान"
+    },
+    "predict": {
+      "heading": "अपनी फसल विवरण दर्ज करें",
+      "state": "राज्य",
+      "district": "जिला",
+      "submit": "पूर्वानुमान लगाएँ"
+    },
+    "dashboard": {
+      "heading": "कपास उत्पादन डैशबोर्ड",
+      "ndvi": "NDVI विश्लेषण",
+      "rainfall": "वर्षा वितरण",
+      "soil": "मिट्टी की नमी",
+      "priceTrend": "बाज़ार मूल्य प्रवृत्ति"
+    },
+    "result": {
+      "heading": "पूर्वानुमान परिणाम",
+      "yield": "अनुमानित उत्पादन",
+      "season": "मौसम उपयुक्तता",
+      "suitable": "उपयुक्त",
+      "notSuitable": "अनुपयुक्त",
+      "recommendations": "सिफारिशें"
+    },
+    "about": {
+      "title": "CropWise के बारे में",
+      "desc": "CropWise एक एआई आधारित कपास पूर्वानुमान प्रणाली है जो NDVI, मौसम, वर्षा और मिट्टी की नमी पर आधारित होती है।"
+    },
+    "contact": {
+      "title": "संपर्क करें",
+      "message": "सहायता या सहयोग के लिए हमसे संपर्क करें।"
+    },
+    "login": {
+      "title": "CropWise लॉगिन करें",
+      "email": "ईमेल",
+      "password": "पासवर्ड",
+      "button": "लॉगिन",
+      "signup": "खाता बनाएँ"
+    },
+    "signup": {
+      "title": "खाता बनाएँ",
+      "name": "पूरा नाम",
+      "email": "ईमेल",
+      "password": "पासवर्ड",
+      "button": "साइन अप",
+      "login": "पहले से खाता है?"
+    },
+    "community": {
+      "title": "समुदाय चर्चा",
+      "start": "चर्चा शुरू करें",
+      "placeholder": "अपना संदेश लिखें...",
+      "post": "पोस्ट करें"
+    },
+    "footer": {
+      "rights": "सर्वाधिकार सुरक्षित।"
+    }
+  },
+
+  "kn": {
+    "nav": {
+      "home": "ಮುಖಪುಟ",
+      "predict": "ಅನುವಾದಿಸಿ",
+      "dashboard": "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+      "community": "ಸಮುದಾಯ",
+      "about": "ಬಗ್ಗೆ",
+      "contact": "ಸಂಪರ್ಕ",
+      "logout": "ಲಾಗೌಟ್",
+      "login": "ಲಾಗಿನ್"
+    },
+    "home": {
+      "title": "ನಿಮ್ಮ ಹತ್ತಿ ಉತ್ಪಾದನೆಯನ್ನು ಪೂರ್ವಾನುಮಾನಿಸಿ",
+      "subtitle": "ನಮ್ಮ AI ಮಾದರಿಯನ್ನು ಬಳಸಿ ಹೆಚ್ಚಿನ ಉತ್ಪಾದನೆ ಪಡೆಯಿರಿ.",
+      "welcomeTitle": "CropWise ಗೆ ಸ್ವಾಗತ",
+      "welcomeDesc": "ಹತ್ತಿ ರೈತರ ಪ್ರಮುಖ ಆಧಾರ. CropWise ಹವಾಮಾನ ಮತ್ತು ಮಣ್ಣಿನ ಆಧಾರದ ಮೇಲೆ ನಿಖರವಾದ ಉತ್ಪಾದನಾ ಪೂರ್ವಾನುಮಾನಗಳನ್ನು ನೀಡುತ್ತದೆ.",
+      "getStarted": "ಪ್ರಾರಂಭಿಸಿ",
+      "state": "ರಾಜ್ಯ",
+      "district": "ಜಿಲ್ಲೆ",
+      "predictYield": "ಉತ್ಪಾದನೆ ಪೂರ್ವಾನುಮಾನ"
+    },
+    "predict": {
+      "heading": "ನಿಮ್ಮ ಬೆಳೆ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ",
+      "state": "ರಾಜ್ಯ",
+      "district": "ಜಿಲ್ಲೆ",
+      "submit": "ಪೂರ್ವಾನುಮಾನ ಮಾಡಿ"
+    },
+    "dashboard": {
+      "heading": "ಹತ್ತಿ ಉತ್ಪಾದನಾ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+      "ndvi": "NDVI ವಿಶ್ಲೇಷಣೆ",
+      "rainfall": "ಮಳೆ ಹಂಚಿಕೆ",
+      "soil": "ಮಣ್ಣಿನ ತೇವಾಂಶ",
+      "priceTrend": "ಮಾರುಕಟ್ಟೆ ಬೆಲೆ ಪ್ರವೃತ್ತಿ"
+    },
+    "result": {
+      "heading": "ಫಲಿತಾಂಶ",
+      "yield": "ಅಂದಾಜಿತ ಉತ್ಪಾದನೆ",
+      "season": "ಋತು ಸೂಕ್ತತೆ",
+      "suitable": "ಸೂಕ್ತ",
+      "notSuitable": "ಅಸೂಕ್ತ",
+      "recommendations": "ಶಿಫಾರಸುಗಳು"
+    },
+    "about": {
+      "title": "CropWise ಬಗ್ಗೆ",
+      "desc": "CropWise NDVI, ಹವಾಮಾನ, ಮಳೆ ಮತ್ತು ಮಣ್ಣಿನ ತೇವಾಂಶ ಆಧರಿಸಿದ AI ಪೂರ್ವಾನುಮಾನ ವ್ಯವಸ್ಥೆ."
+    },
+    "contact": {
+      "title": "ಸಂಪರ್ಕಿಸಿ",
+      "message": "ಸಹಾಯ ಅಥವಾ ಸಹಯೋಗಕ್ಕಾಗಿ ನಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸಿ."
+    },
+    "login": {
+      "title": "CropWise ಲಾಗಿನ್",
+      "email": "ಇಮೇಲ್",
+      "password": "ಪಾಸ್ವರ್ಡ್",
+      "button": "ಲಾಗಿನ್",
+      "signup": "ಖಾತೆ ಸೃಷ್ಟಿಸಿ"
+    },
+    "signup": {
+      "title": "ಖಾತೆ ಸೃಷ್ಟಿಸಿ",
+      "name": "ಪೂರ್ಣ ಹೆಸರು",
+      "email": "ಇಮೇಲ್",
+      "password": "ಪಾಸ್ವರ್ಡ್",
+      "button": "ಸೈನ್ ಅಪ್",
+      "login": "ಈಗಾಗಲೇ ಖಾತೆ ಇದೆಯೇ?"
+    },
+    "community": {
+      "title": "ಸಮುದಾಯ ಚರ್ಚೆ",
+      "start": "ಚರ್ಚೆ ಪ್ರಾರಂಭಿಸಿ",
+      "placeholder": "ನಿಮ್ಮ ಸಂದೇಶ ಬರೆಯಿರಿ...",
+      "post": "ಪೋಸ್ಟ್ ಮಾಡಿ"
+    },
+    "footer": {
+      "rights": "ಎಲ್ಲ ಹಕ್ಕುಗಳು ಕಾಯ್ದಿರಿಸಲ್ಪಟ್ಟಿವೆ."
+    }
+  }
+}
