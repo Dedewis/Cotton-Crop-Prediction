@@ -1,5 +1,34 @@
 import streamlit as st
 import json
+from utils.theme import apply_theme
+from utils.language import translate, languages
+
+# -----------------------------
+# 1. Init Session States
+# -----------------------------
+if "theme" not in st.session_state:
+    st.session_state.theme = "light"
+
+if "language" not in st.session_state:
+    st.session_state.language = "en"
+
+# -----------------------------
+# 2. Apply Theme
+# -----------------------------
+apply_theme(st.session_state.theme)
+
+# -----------------------------
+# 3. Language Dropdown
+# -----------------------------
+st.sidebar.markdown("### 🌐 " + translate("language", st.session_state.language))
+
+selected_lang = st.sidebar.selectbox(
+    "",
+    list(languages.keys()),
+    index=list(languages.keys()).index(st.session_state.language),
+)
+
+st.session_state.language = selected_lang
 
 # -----------------------------
 # Load India state/district data

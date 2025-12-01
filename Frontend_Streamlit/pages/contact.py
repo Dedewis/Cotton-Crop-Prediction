@@ -1,147 +1,190 @@
 # pages/Contact_Us.py
 import streamlit as st
+from utils.theme import apply_theme
+from utils.language import translate, languages
 
-# Theme import
-try:
-    from utils.theme import get_theme
-except:
-    def get_theme():
-        return st.session_state.get("theme", "light")
+# -----------------------------
+# Init Session State
+# -----------------------------
+if "theme" not in st.session_state:
+    st.session_state.theme = "light"
 
-st.set_page_config(page_title="CropWise - Contact Us", layout="centered")
+if "language" not in st.session_state:
+    st.session_state.language = "en"
 
-# ---------------------------------------------------------
-#                    THEME VALUES
-# ---------------------------------------------------------
-theme = get_theme()
+apply_theme(st.session_state.theme)
+
+# -----------------------------
+# Sidebar
+# -----------------------------
+with st.sidebar:
+    st.title("🌾 CropWise")
+
+    st.subheader(translate("language", st.session_state.language))
+    st.session_state.language = st.selectbox(
+        "",
+        list(languages.keys()),
+        index=list(languages.keys()).index(st.session_state.language),
+        format_func=lambda x: languages[x]
+    )
+
+    st.subheader(translate("theme", st.session_state.language))
+    selected_theme = st.radio(
+        "",
+        ["light", "dark"],
+        index=0 if st.session_state.theme == "light" else 1
+    )
+    st.session_state.theme = selected_theme
+
+
+# -----------------------------
+# Page Config
+# -----------------------------
+st.set_page_config(page_title="CropWise - Contact Us", layout="wide")
+
+theme = st.session_state.theme
 is_dark = theme == "dark"
 
-# ---------------------------------------------------------
-#                GLOBAL STYLES
-# ---------------------------------------------------------
+# -----------------------------
+# Global Styles
+# -----------------------------
 st.markdown(
     f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap');
 
-    html, body, [class*="css"] {{
-        font-family: "Manrope", sans-serif;
-    }}
+        html, body, [class*="css"] {{
+            font-family: 'Manrope', sans-serif;
+        }}
 
-    /* Light Theme */
-    .light-bg {{ background:#fcfaf8; color:#1c140d; }}
-    .light-text {{ color:#1c140d; }}
-    .light-muted {{ color:#9c7349; }}
-    .light-input-bg {{ background:#fcfaf8; border-color:#e8dbce; color:#1c140d; }}
-    .light-section-border {{ border-color:#e8dbce; }}
+        .page-wrap {{
+            max-width: 850px;
+            margin: auto;
+            padding: 30px 20px;
+        }}
 
-    /* Dark Theme */
-    .dark-bg {{ background:#0d1115; color:#e6edf3; }}
-    .dark-text {{ color:#e6edf3; }}
-    .dark-muted {{ color:#c59f74; }}
-    .dark-input-bg {{ background:#111820; border-color:#2a2f36; color:#e6edf3; }}
-    .dark-section-border {{ border-color:#2a2f36; }}
+        .section-card {{
+            background: {"#0f1115" if is_dark else "#ffffff"};
+            padding: 25px;
+            border-radius: 14px;
+            border: 1px solid {"#2a2f36" if is_dark else "#e8e2d9"};
+            margin-bottom: 25px;
+        }}
 
-    textarea, input {{
-        border-radius:12px !important;
-        padding:14px !important;
-        font-size:15px !important;
-    }}
+        .form-label {{
+            font-weight: 600;
+            margin-bottom: -8px;
+            color: {"#e6edf3" if is_dark else "#1c140d"};
+        }}
+
+        textarea, input {{
+            border-radius: 10px !important;
+            padding: 12px !important;
+        }}
+
+        .header-title {{
+            font-size: 32px;
+            font-weight: 800;
+            color: {"#e6edf3" if is_dark else "#1c140d"};
+        }}
+
+        .header-sub {{
+            margin-top: -10px;
+            font-size: 15px;
+            color: {"#c8b28e" if is_dark else "#9b7b52"};
+        }}
+
+        .info-title {{
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: {"#e6edf3" if is_dark else "#1c140d"};
+        }}
+
+        .info-label {{
+            color: {"#c8b28e" if is_dark else "#9b7b52"};
+            font-size: 14px;
+        }}
+
+        .info-value {{
+            color: {"#e6edf3" if is_dark else "#1c140d"};
+            font-size: 16px;
+            font-weight: 500;
+        }}
     </style>
     """,
-    unsafe_allow_html=True,
-)
-
-bg_class = "dark-bg" if is_dark else "light-bg"
-text_class = "dark-text" if is_dark else "light-text"
-muted_class = "dark-muted" if is_dark else "light-muted"
-input_class = "dark-input-bg" if is_dark else "light-input-bg"
-border_class = "dark-section-border" if is_dark else "light-section-border"
-
-
-# ---------------------------------------------------------
-#                    PAGE BACKGROUND
-# ---------------------------------------------------------
-st.markdown(
-    f"<div class='{bg_class}' style='min-height:100vh; padding-top:30px;'>",
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
 
 
-# ---------------------------------------------------------
-#                    PAGE HEADER
-# ---------------------------------------------------------
+# -----------------------------
+# PAGE CONTENT
+# -----------------------------
+st.markdown("<div class='page-wrap'>", unsafe_allow_html=True)
+
+# -----------------------------
+# Header
+# -----------------------------
 st.markdown(
     f"""
-    <h1 class="{text_class}" style="font-size:32px; text-align:left; padding-left:15px;">
-        Contact Us
-    </h1>
-    <p class="{muted_class}" style="margin-top:-10px; padding-left:15px;">
-        We're here to help! Reach out to us with any questions or feedback.
-    </p>
+    <h1 class="header-title">📬 Contact Us</h1>
+    <p class="header-sub">We’re here to help! Reach out for support, questions, or feedback.</p>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
 
 
-# ---------------------------------------------------------
-#                CONTACT FORM
-# ---------------------------------------------------------
+# -----------------------------
+# Contact Form Card
+# -----------------------------
+st.markdown("<div class='section-card'>", unsafe_allow_html=True)
+
 with st.form("contact_form"):
-    st.markdown(f"<p class='{text_class}'><b>Your Name</b></p>", unsafe_allow_html=True)
-    name = st.text_input("", placeholder="Enter your name", key="name")
+    st.markdown("<p class='form-label'>Your Name</p>", unsafe_allow_html=True)
+    name = st.text_input("", placeholder="Enter your name")
 
-    st.markdown(f"<p class='{text_class}'><b>Your Email</b></p>", unsafe_allow_html=True)
-    email = st.text_input("", placeholder="Enter your email", key="email")
+    st.markdown("<p class='form-label'>Your Email</p>", unsafe_allow_html=True)
+    email = st.text_input("", placeholder="Enter your email")
 
-    st.markdown(f"<p class='{text_class}'><b>Subject</b></p>", unsafe_allow_html=True)
-    subject = st.text_input("", placeholder="Enter the subject", key="subject")
+    st.markdown("<p class='form-label'>Subject</p>", unsafe_allow_html=True)
+    subject = st.text_input("", placeholder="Enter the subject")
 
-    st.markdown(f"<p class='{text_class}'><b>Message</b></p>", unsafe_allow_html=True)
-    message = st.text_area("", placeholder="Enter your message", key="message")
+    st.markdown("<p class='form-label'>Message</p>", unsafe_allow_html=True)
+    message = st.text_area("", placeholder="Enter your message", height=150)
 
-    send = st.form_submit_button("📨 Send Message")
+    submitted = st.form_submit_button("📨 Send Message")
 
-    if send:
+    if submitted:
         if not name or not email or not subject or not message:
-            st.error("Please fill out all fields.")
+            st.error("⚠ Please fill all fields before sending.")
         else:
-            st.success("Your message has been sent successfully!")
+            st.success("✅ Your message has been sent successfully!")
+
+st.markdown("</div>", unsafe_allow_html=True)
 
 
-# ---------------------------------------------------------
-#               ADDITIONAL CONTACT INFO
-# ---------------------------------------------------------
+# -----------------------------
+# Additional Information Card
+# -----------------------------
+st.markdown("<div class='section-card'>", unsafe_allow_html=True)
+
+st.markdown("<div class='info-title'>📎 Additional Contact Information</div>", unsafe_allow_html=True)
+
 st.markdown(
     f"""
-    <h2 class="{text_class}" style="font-size:22px; margin-top:35px; padding-left:15px;">
-        Additional Contact Information
-    </h2>
+    <p class="info-label">Email</p>
+    <p class="info-value">support@cropwise.com</p>
+
+    <p class="info-label" style="margin-top:15px;">Phone</p>
+    <p class="info-value">+1 (555) 123-4567</p>
+
+    <p class="info-label" style="margin-top:15px;">Address</p>
+    <p class="info-value">123 AgriTech Lane, Farmville, USA</p>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_html=True
 )
 
-# CONTACT SECTION GRID
-st.markdown(
-    f"""
-    <div style="padding: 15px;">
-        <div style="border-top:1px solid; padding:12px 0;" class="{border_class}">
-            <p class="{muted_class}" style="margin:0;">Email</p>
-            <p class="{text_class}" style="margin:0;">support@cropwise.com</p>
-        </div>
+st.markdown("</div>", unsafe_allow_html=True)
 
-        <div style="border-top:1px solid; padding:12px 0;" class="{border_class}">
-            <p class="{muted_class}" style="margin:0;">Phone</p>
-            <p class="{text_class}" style="margin:0;">+1 (555) 123-4567</p>
-        </div>
-
-        <div style="border-top:1px solid; padding:12px 0;" class="{border_class}">
-            <p class="{muted_class}" style="margin:0;">Address</p>
-            <p class="{text_class}" style="margin:0;">123 AgriTech Lane, Farmville, USA</p>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
+# END WRAPPER
 st.markdown("</div>", unsafe_allow_html=True)
