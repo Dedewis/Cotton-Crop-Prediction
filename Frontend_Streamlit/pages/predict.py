@@ -1,120 +1,74 @@
 import streamlit as st
-import json
 from utils.theme import apply_theme
 from utils.language import translate, languages
+import requests
+from streamlit_extras.switch_page_button import switch_page
 
 # -----------------------------
-# 1. Init Session States
+# Page Setup
 # -----------------------------
+st.set_page_config(page_title="CropWise – Predict", layout="wide")
+
 if "theme" not in st.session_state:
     st.session_state.theme = "light"
-
 if "language" not in st.session_state:
     st.session_state.language = "en"
 
-# -----------------------------
-# 2. Apply Theme
-# -----------------------------
-apply_theme(st.session_state.theme)
+theme = st.session_state.theme
+lang = st.session_state.language
+
+# translation helper
+def t(key):
+    return translate(key, st.session_state.language)
+
+apply_theme(theme)
 
 # -----------------------------
-# 3. Language Dropdown
+# Title
 # -----------------------------
-st.sidebar.markdown("### 🌐 " + translate("language", st.session_state.language))
-
-selected_lang = st.sidebar.selectbox(
-    "",
-    list(languages.keys()),
-    index=list(languages.keys()).index(st.session_state.language),
-)
-
-st.session_state.language = selected_lang
-
-# -----------------------------------
-# PAGE CONFIG
-# -----------------------------------
-st.set_page_config(page_title="Predict – CropWise", layout="wide")
-
-# -----------------------------------
-# LOAD INDIA STATE → DISTRICT JSON
-# -----------------------------------
-with open("data/india_states.json", "r", encoding="utf-8") as f:
-    india_data = json.load(f)
-
-states = [item["state"] for item in india_data]
-
-
-# -----------------------------------
-# TITLE SECTION
-# -----------------------------------
 st.markdown(
-    """
-    <h1 style='text-align:center; color:#1c140d;'>🌾 Cotton Yield Prediction</h1>
-    <p style='text-align:center; color:#4c3a28; margin-top:-10px;'>
-        Select your State and District to generate yield prediction.
-    </p>
+    f"""
+    <h1 style="font-weight:900; font-size:35px;">
+        🌾 {t("predict")}
+    </h1>
+    <p style="opacity:0.8;">{t("predict_sub")}</p>
     """,
     unsafe_allow_html=True,
 )
 
-st.write("")  # spacing
+# -----------------------------
+# Input Fields
+# -----------------------------
+st.subheader(t("select_location"))
 
+states = ["Maharashtra", "Gujarat", "Telangana", "Andhra Pradesh", "Karnataka", "Tamil Nadu"]
+selected_state = st.selectbox(t("state"), states)
 
-# -----------------------------------
-# FORM CARD UI
-# -----------------------------------
-st.markdown(
-    """
-    <div style="
-        background:#f4ede7;
-        padding: 24px;
-        border-radius:16px;
-        max-width:480px;
-        margin:auto;
-        border:1px solid #e8dbce;
-    ">
-    """,
-    unsafe_allow_html=True,
+districts = {
+    "Maharashtra": ["Akola", "Amravati", "Buldhana"],
+    "Gujarat": ["Surat", "Rajkot", "Vadodara"],
+    "Telangana": ["Adilabad", "Nizamabad"],
+    "Andhra Pradesh": ["Guntur", "Nellore"],
+    "Karnataka": ["Dharwad", "Gadag"],
+    "Tamil Nadu": ["Coimbatore", "Salem"]
+}
+
+selected_district = st.selectbox(
+    t("district"),
+    districts.get(selected_state, [])
 )
 
-# 🔽 STATE SELECT
-state = st.selectbox("State", ["Select State"] + states)
+# -----------------------------
+# Predict Button
+# -----------------------------
+if st.button(t("predict"), use_container_width=True):
 
-# 🔽 DISTRICT SELECT (dynamic)
-district_list = []
+    # Save values for Dashboard
+    st.session_state.selected_state = selected_state
+    st.session_state.selected_district = selected_district
 
-if state != "Select State":
-    for entry in india_data:
-        if entry["state"] == state:
-            district_list = entry["districts"]
+    st.success(f"✅ {t('success')} {selected_district}, {selected_state}")
 
-district = st.selectbox(
-    "District",
-    ["Select District"] + district_list if district_list else ["Select District"],
-)
-
-# -----------------------------------
-# PREDICT BUTTON
-# -----------------------------------
-predict_btn = st.button(
-    "🔍 Predict Yield",
-    use_container_width=True,
-)
-
-st.markdown("</div>", unsafe_allow_html=True)
-
-
-# -----------------------------------
-# HANDLE SELECTION
-# -----------------------------------
-if predict_btn:
-    if state == "Select State" or district == "Select District":
-        st.error("⚠️ Please select both State and District.")
-    else:
-        st.session_state["selected_state"] = state
-        st.session_state["selected_district"] = district
-
-        st.success("✔ Selection saved successfully!")
-        st.info("Now go to the **Result** page to view the prediction.")
-
+    # Redirect → Dashboard
+    switch_page("Dashboard")
 

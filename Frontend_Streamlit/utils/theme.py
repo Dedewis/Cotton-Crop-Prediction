@@ -178,3 +178,6 @@ def apply_theme(theme_choice: str):
         st.markdown(light_theme_css, unsafe_allow_html=True)
     else:
         st.markdown(dark_theme_css, unsafe_allow_html=True)
+
+def get_theme():
+    return st.session_state.theme

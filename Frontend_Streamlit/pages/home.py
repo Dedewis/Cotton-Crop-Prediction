@@ -1,187 +1,233 @@
 import streamlit as st
-import json
 from utils.theme import apply_theme
-from utils.language import translate, languages
 
 # -----------------------------
-# 1. Init Session States
+# PAGE CONFIG
 # -----------------------------
+st.set_page_config(page_title="CropWise – Home", layout="wide")
+
 if "theme" not in st.session_state:
     st.session_state.theme = "light"
 
 if "language" not in st.session_state:
     st.session_state.language = "en"
 
-# -----------------------------
-# 2. Apply Theme
-# -----------------------------
-apply_theme(st.session_state.theme)
+theme = st.session_state.theme
+lang = st.session_state.language
+
+apply_theme(theme)
+
+# Color based on theme
+text_color = "#ffffff" if theme == "dark" else "#1a1a1a"
+card_bg = "rgba(255,255,255,0.1)" if theme == "dark" else "rgba(0,0,0,0.05)"
 
 # -----------------------------
-# 3. Language Dropdown
+# TITLE SECTION
 # -----------------------------
-st.sidebar.markdown("### 🌐 " + translate("language", st.session_state.language))
-
-selected_lang = st.sidebar.selectbox(
-    "",
-    list(languages.keys()),
-    index=list(languages.keys()).index(st.session_state.language),
+st.markdown(
+    f"""
+    <div style='text-align:center; padding-top:10px;'>
+        <h1 style='color:{text_color}; font-size:45px; font-weight:900;'>🌾 CropWise</h1>
+        <p style='color:{text_color}; opacity:0.85; font-size:18px;'>
+            AI-powered cotton yield prediction and smart farming assistant.
+        </p>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
-st.session_state.language = selected_lang
-
 # -----------------------------
-# Load India state/district data
+# INTRODUCTION BLOCK
 # -----------------------------
-with open("data/India.json", "r", encoding="utf-8") as f:
-    INDIA_DATA = json.load(f)
-
-# -----------------------------
-# Language Content
-# -----------------------------
-LANG = {
-    "en": {
-        "home": "Home",
-        "about": "About",
-        "services": "Services",
-        "contact": "Contact",
-        "get_started": "Get Started",
-        "title": "Predict Your Cotton Yield",
-        "subtitle": "Maximize your harvest with our advanced prediction system. Enter your crop details and get accurate yield forecasts.",
-        "welcome_title": "Welcome to the Cotton Crop Prediction System",
-        "welcome_desc": "Cotton, often called 'white gold,' is a globally significant crop. Our system forecasts cotton yields accurately, helping farmers maximize productivity.",
-        "enter_details": "Enter Your Crop Details",
-        "state": "State",
-        "district": "District",
-        "predict": "Predict Yield",
-    },
-    "hi": {
-        "home": "मुखपृष्ठ",
-        "about": "हमारे बारे में",
-        "services": "सेवाएँ",
-        "contact": "संपर्क करें",
-        "get_started": "शुरू करें",
-        "title": "अपनी कपास उपज की भविष्यवाणी करें",
-        "subtitle": "उन्नत पूर्वानुमान प्रणाली के साथ अपनी फसल का अधिकतम लाभ उठाएँ।",
-        "welcome_title": "कपास उपज पूर्वानुमान प्रणाली में आपका स्वागत है",
-        "welcome_desc": "कपास एक महत्वपूर्ण वैश्विक फसल है। यह प्रणाली किसानों को सटीक उपज पूर्वानुमान प्रदान करती है।",
-        "enter_details": "अपनी फसल विवरण दर्ज करें",
-        "state": "राज्य",
-        "district": "ज़िला",
-        "predict": "उपज भविष्यवाणी करें",
-    },
-    "kn": {
-        "home": "ಮುಖಪುಟ",
-        "about": "ಬಗ್ಗೆ",
-        "services": "ಸೇವೆಗಳು",
-        "contact": "ಸಂಪರ್ಕಿಸಿ",
-        "get_started": "ಪ್ರಾರಂಭಿಸಿ",
-        "title": "ನಿಮ್ಮ ಹತ್ತಿ ಉತ್ಪಾದನೆಯನ್ನು ಊಹಿಸಿ",
-        "subtitle": "ನಮ್ಮ ಪ್ರಗತಿಶೀಲ ಪೂರ್ವಾನುಮಾನ ವ್ಯವಸ್ಥೆಯಿಂದ ನಿಮ್ಮ ಬೆಳೆ ಉತ್ಪಾದನೆಯನ್ನು ಹೆಚ್ಚಿಸಿ.",
-        "welcome_title": "ಹತ್ತಿ ಉತ್ಪಾದನೆ ಪೂರ್ವಾನುಮಾನ ವ್ಯವಸ್ಥೆಗೆ ಸ್ವಾಗತ",
-        "welcome_desc": "ಹತ್ತಿ ಒಂದು ಪ್ರಮುಖ ಜಾಗತಿಕ ಬೆಳೆ. ನಮ್ಮ ವ್ಯವಸ್ಥೆ ನಿಖರ ಉತ್ಪಾದನೆ ಪೂರ್ವಾನುಮಾನಗಳನ್ನು ನೀಡುತ್ತದೆ.",
-        "enter_details": "ನಿಮ್ಮ ಬೆಳೆ ವಿವರಗಳನ್ನು ನಮೂದಿಸಿ",
-        "state": "ರಾಜ್ಯ",
-        "district": "ಜಿಲ್ಲೆ",
-        "predict": "ಉತ್ಪಾದನೆ ಊಹಿಸಿ",
-    }
-}
-
-# -----------------------------
-# PAGE CONFIG
-# -----------------------------
-st.set_page_config(page_title="CropWise", layout="wide")
-
-# -----------------------------
-# SIDEBAR — Theme + Language
-# -----------------------------
-st.sidebar.header("⚙️ Settings")
-
-theme = st.sidebar.radio("Theme", ["Light", "Dark"])
-lang = st.sidebar.selectbox("Language", ["en", "hi", "kn"])
-
-t = LANG[lang]
-
-# -----------------------------
-# Apply Dark Theme Styling
-# -----------------------------
-if theme == "Dark":
-    st.markdown("""
-        <style>
-            body { background-color: #0d1b10; color: white; }
-            .stSelectbox > div > div { background: #1e2b1f !important; color: white; }
-            .stButton button { background:#1ad64d; color:black; font-weight:700; }
-            .title-text { color:white !important; }
-            .sub-text { color:#d7e8d8 !important; }
-        </style>
-    """, unsafe_allow_html=True)
-else:
-    st.markdown("""
-        <style>
-            body { background-color: #f8fcf9; color:#0d1b10; }
-            .title-text { color:#0d1b10 !important; }
-            .sub-text { color:#4b5c4b !important; }
-        </style>
-    """, unsafe_allow_html=True)
-
-# -----------------------------
-# NAVBAR
-# -----------------------------
-st.markdown(f"""
-    <div style='display:flex; justify-content:space-between; 
-                padding:12px 40px; border-bottom:1px solid #e7f3e9;'>
-        <div style='display:flex; align-items:center; gap:8px;'>
-            <span style='font-size:20px; font-weight:700;'>CropWise</span>
-        </div>
-        <div style='display:flex; gap:25px; font-size:15px;'>
-            <a href='#' style='text-decoration:none; color:inherit;'>{t['home']}</a>
-            <a href='#' style='text-decoration:none; color:inherit;'>{t['about']}</a>
-            <a href='#' style='text-decoration:none; color:inherit;'>{t['services']}</a>
-            <a href='#' style='text-decoration:none; color:inherit;'>{t['contact']}</a>
-        </div>
+st.markdown(
+    f"""
+    <div style="
+        padding: 22px;
+        background:{card_bg};
+        border-radius:12px;
+        color:{text_color};
+        font-size:16px;
+        line-height:1.6;
+    ">
+        <b>CropWise</b> helps cotton farmers make data-driven decisions using:
+        <ul>
+            <li>📈 AI-based cotton yield predictions</li>
+            <li>🌦 Real-time weather forecasting</li>
+            <li>🛰 NDVI & vegetation health monitoring</li>
+            <li>🌱 Soil moisture and nutrient indicators</li>
+            <li>🐛 Pest & disease surveillance</li>
+            <li>🔄 Crop rotation & soil improvement suggestions</li>
+        </ul>
+        Designed to empower farmers with accurate, location-specific insights.
     </div>
-""", unsafe_allow_html=True)
-
-# -----------------------------
-# HERO SECTION
-# -----------------------------
-st.markdown(f"""
-<div style='background-image:
-linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.4)),
-url("https://lh3.googleusercontent.com/aida-public/AB6AXuDcBnoyswmC_vRaKxkrNukCKAnVK4naU17otfZ9QhqJwqMhfzPoh_ZX_Nn6gmJcsQ0BQS4Wz1RftQvjtMtJug-uRrqKkj2ckA-UCaIQphgF-0fGSSLHlmFvjHwQpvZLFNacINvSvBGx8Kb9nrQa6z7ntj90w_URmSmapsVcO2cswlB2vatmj6SAUt-3POxCCcZDtLQIcn-I6v3neG9SMdI_8SiC0PbY1T2rJpV8VyqfSCcOGR7iN3OSI8X0KAE5BWTOvuicAFg-24E");
-     height:420px; border-radius:12px; background-size:cover;
-     display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px;'>
-    <h1 class='title-text' style='font-size:42px; font-weight:900; text-align:center;'>{t['title']}</h1>
-    <p class='sub-text' style='font-size:16px; max-width:600px; text-align:center;'>{t['subtitle']}</p>
-</div>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
 
 st.write("")
 
 # -----------------------------
-# CONTENT SECTION
+# COTTON GROWTH STAGES
 # -----------------------------
-st.subheader(t["welcome_title"])
-st.write(t["welcome_desc"])
+st.markdown(
+    f"<h2 style='color:{text_color}; margin-top:20px;'>🌾 Cotton Crop Growth Stages</h2>",
+    unsafe_allow_html=True
+)
 
-st.subheader(t["enter_details"])
+s1, s2, s3, s4 = st.columns(4)
+
+for col, title, desc in [
+    (s1, "🌱 Germination", "Seed sprouts and begins development."),
+    (s2, "🌿 Vegetative", "Leaf and branch development begins."),
+    (s3, "🌸 Flowering", "Blooming and pollination stage."),
+    (s4, "🧺 Boll Formation", "Cotton bolls grow before harvest.")
+]:
+    col.markdown(
+        f"""
+        <div style="padding:15px; background:{card_bg}; border-radius:10px; color:{text_color}; text-align:center;">
+            <h4>{title}</h4>
+            <p>{desc}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+st.write("")
 
 # -----------------------------
-# STATE & DISTRICT SELECT
+# NDVI EXPLANATION
 # -----------------------------
-state_list = sorted([item["state"] for item in INDIA_DATA])
-selected_state = st.selectbox(t["state"], state_list)
+st.markdown(
+    f"<h2 style='color:{text_color}; margin-top:25px;'>🛰 NDVI – Vegetation Index</h2>",
+    unsafe_allow_html=True
+)
 
-district_list = []
-for item in INDIA_DATA:
-    if item["state"] == selected_state:
-        district_list = item["districts"]
-        break
+st.markdown(
+    f"""
+    <div style="padding:20px; background:{card_bg}; border-radius:12px; color:{text_color}; line-height:1.6;">
+        NDVI helps measure plant health using satellite imagery.
+        <br><br>
+        <b>NDVI Ranges:</b>
+        <ul>
+            <li>🌿 <b>0.6 – 0.9</b> Healthy vegetation</li>
+            <li>🍃 <b>0.3 – 0.6</b> Moderate health</li>
+            <li>🍂 <b>0.1 – 0.3</b> Stressed vegetation</li>
+        </ul>
+        Lower NDVI alerts farmers about crop stress due to pests, water shortage, or disease.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-selected_district = st.selectbox(t["district"], district_list)
+st.write("")
 
 # -----------------------------
-# BUTTON
+# WEATHER IMPACT SECTION
 # -----------------------------
-if st.button(t["predict"]):
-    st.success(f"✅ Yield prediction initiated for **{selected_district}, {selected_state}**.")
+st.markdown(
+    f"<h2 style='color:{text_color}; margin-top:25px;'>🌦 Weather Factors Affecting Cotton</h2>",
+    unsafe_allow_html=True
+)
+
+w1, w2, w3 = st.columns(3)
+
+for col, title, desc in [
+    (w1, "🌡 Temperature", "Optimal: 21–30°C. Extreme heat reduces boll growth."),
+    (w2, "🌧 Rainfall", "Too much rain causes fungal issues; too little reduces yield."),
+    (w3, "💨 Humidity", "High humidity promotes pests and fungal diseases."),
+]:
+    col.markdown(
+        f"""
+        <div style="padding:18px; background:{card_bg}; border-radius:10px; text-align:center; color:{text_color};">
+            <h4>{title}</h4>
+            <p>{desc}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+st.write("")
+
+# -----------------------------
+# SOIL & FERTILITY
+# -----------------------------
+st.markdown(
+    f"<h2 style='color:{text_color}; margin-top:25px;'>🌱 Soil Requirements & Fertility</h2>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    f"""
+    <div style="padding:20px; background:{card_bg}; border-radius:12px; color:{text_color}; line-height:1.6;">
+        <b>Ideal Cotton Soil:</b>
+        <ul>
+            <li>Black soil / Loamy soil</li>
+            <li>pH 5.8 – 8.0</li>
+            <li>High nutrient content with proper drainage</li>
+        </ul>
+
+        <b>Improve Soil Fertility:</b>
+        <ul>
+            <li>Apply compost and organic manure</li>
+            <li>Use legumes for nitrogen fixation</li>
+            <li>Conduct soil testing for NPK balance</li>
+        </ul>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.write("")
+
+# -----------------------------
+# CROP ROTATION SECTION
+# -----------------------------
+st.markdown(
+    f"<h2 style='color:{text_color}; margin-top:25px;'>🔄 Suggested Crop Rotation After Cotton</h2>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    f"""
+    <div style="padding:18px; background:{card_bg}; border-radius:12px; color:{text_color}; line-height:1.6;">
+        Plant these crops after cotton to restore soil health:
+        <ul>
+            <li>🌱 Green gram</li>
+            <li>🌱 Black gram</li>
+            <li>🌱 Cowpea</li>
+            <li>🌱 Red gram</li>
+            <li>🌾 Sorghum (Jowar)</li>
+        </ul>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.write("")
+
+# -----------------------------
+# PEST & DISEASE SECTION
+# -----------------------------
+st.markdown(
+    f"<h2 style='color:{text_color}; margin-top:25px;'>🐛 Pest & Disease Surveillance</h2>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    f"""
+    <div style="padding:18px; background:{card_bg}; border-radius:12px; color:{text_color}; line-height:1.6;">
+        Common cotton threats include:
+        <ul>
+            <li>🦋 Pink Bollworm</li>
+            <li>🦗 Aphids</li>
+            <li>🕷 Mites</li>
+            <li>🍂 Leaf spot disease</li>
+            <li>🌿 Fusarium wilt</li>
+        </ul>
+        CropWise detects early risk signals using weather, humidity & NDVI patterns.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.write("")

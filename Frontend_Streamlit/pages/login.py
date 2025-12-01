@@ -3,151 +3,178 @@ from streamlit_extras.switch_page_button import switch_page
 from utils.theme import apply_theme
 from utils.language import translate, languages
 
-# -----------------------------
-# 1. Init Session States
-# -----------------------------
+# ---------------------------------------------------------
+# PAGE CONFIG (MUST BE FIRST)
+# ---------------------------------------------------------
+st.set_page_config(page_title="CropWise - Login", layout="wide")
+
+# ---------------------------------------------------------
+# SESSION STATE
+# ---------------------------------------------------------
 if "theme" not in st.session_state:
     st.session_state.theme = "light"
 
 if "language" not in st.session_state:
     st.session_state.language = "en"
 
-# -----------------------------
-# 2. Apply Theme
-# -----------------------------
 apply_theme(st.session_state.theme)
 
-# -----------------------------
-# 3. Language Dropdown
-# -----------------------------
-st.sidebar.markdown("### 🌐 " + translate("language", st.session_state.language))
+# ---------------------------------------------------------
+# SIDEBAR
+# ---------------------------------------------------------
+with st.sidebar:
+    st.title("🌾 CropWise")
 
-selected_lang = st.sidebar.selectbox(
-    "",
-    list(languages.keys()),
-    index=list(languages.keys()).index(st.session_state.language),
+    st.subheader("Language")
+    st.session_state.language = st.selectbox(
+        "",
+        list(languages.keys()),
+        index=list(languages.keys()).index(st.session_state.language),
+        format_func=lambda x: languages[x]
+    )
+
+    st.subheader("Theme")
+    st.session_state.theme = st.radio(
+        "",
+        ["light", "dark"],
+        index=0 if st.session_state.theme == "light" else 1
+    )
+
+# ---------------------------------------------------------
+# THEME COLORS
+# ---------------------------------------------------------
+is_dark = st.session_state.theme == "dark"
+
+BG = "#0d1115" if is_dark else "#f5f5f3"
+CARD_BG = "#111820" if is_dark else "#ffffff"
+TEXT = "#e6edf3" if is_dark else "#1c140d"
+MUTED = "#c59f74" if is_dark else "#9c7349"
+INPUT_BG = "#0f1820" if is_dark else "#ffffff"
+INPUT_BORDER = "#2a2f36" if is_dark else "#d8cfc4"
+
+# ---------------------------------------------------------
+# PAGE STYLES
+# ---------------------------------------------------------
+st.markdown(f"""
+<style>
+body {{
+    background-color: {BG} !important;
+}}
+
+.center-wrapper {{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 60px;
+}}
+
+.center-container {{
+    width: 480px;
+    background: {CARD_BG};
+    padding: 40px;
+    border-radius: 18px;
+    border: 1px solid {INPUT_BORDER};
+    box-shadow: 0px 4px 14px rgba(0,0,0,0.12);
+}}
+
+h1 {{
+    text-align: center;
+    font-weight: 800;
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: {TEXT};
+}}
+
+.label {{
+    font-weight: 600;
+    color: {TEXT};
+    margin-bottom: 5px;
+    font-size: 15px;
+}}
+
+.stTextInput > div > div > input {{
+    background: {INPUT_BG} !important;
+    color: {TEXT} !important;
+    border: 1.4px solid {INPUT_BORDER} !important;
+    padding: 13px !important;
+    border-radius: 12px !important;
+}}
+
+.button-main {{
+    background: #E6B31E;
+    color: #1a1a1a;
+    padding: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+}}
+
+.button-main:hover {{ background: #f3c846; }}
+
+.button-outline {{
+    background: #ffe28a;
+    color: #1a1a1a;
+    padding: 12px;
+    font-size: 17px;
+    font-weight: 700;
+    border-radius: 10px;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 12px;
+}}
+
+.forgot {{
+    text-align: right;
+    margin-bottom: 10px;
+}}
+
+.forgot a {{
+    color: #4f9f5b;
+    font-size: 14px;
+    text-decoration: none;
+}}
+
+.forgot a:hover {{
+    text-decoration: underline;
+}}
+</style>
+""", unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# LOGIN CONTAINER
+# ---------------------------------------------------------
+st.markdown("<div class='center-wrapper'>", unsafe_allow_html=True)
+
+
+# Title
+st.markdown("<h1>🔐 Login to CropWise</h1>", unsafe_allow_html=True)
+
+# Email Field
+st.markdown("<p class='label'>Email Address</p>", unsafe_allow_html=True)
+email = st.text_input("", placeholder="Enter your email")
+
+# Password Field
+st.markdown("<p class='label'>Password</p>", unsafe_allow_html=True)
+password = st.text_input("", placeholder="Enter your password", type="password")
+
+# Forgot Password
+st.markdown(
+    "<div class='forgot'><a href='/ResetPassword'>Forgot Password?</a></div>",
+    unsafe_allow_html=True
 )
 
-st.session_state.language = selected_lang
+# Login Button
+if st.button("Login", key="login_btn"):
+    if email.strip() == "" or password.strip() == "":
+        st.error("Please enter your email and password.")
+    else:
+        switch_page("Dashboard")
 
+# Signup Button
+if st.button("Sign Up", key="signup_btn"):
+    switch_page("Signup")
 
-# ------------------ PAGE CONFIG ------------------
-st.set_page_config(page_title="CropWise - Login", layout="wide")
-
-# ------------------ FONTS ------------------
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap');
-
-html, body, [class*="css"] {
-    font-family: 'Work Sans', 'Noto Sans', sans-serif;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# ------------------ NAVBAR ------------------
-st.markdown("""
-<style>
-.navbar {
-    display:flex;
-    justify-content:space-between;
-    padding:12px 40px;
-    border-bottom:1px solid #eef3e8;
-}
-.nav-links a{
-    margin-right:25px;
-    font-size:15px;
-    color:var(--text);
-    text-decoration:none;
-    font-weight:500;
-}
-.brand-title{
-    font-size:20px;
-    font-weight:700;
-    color:var(--text);
-}
-.signup-btn{
-    background:#8de12d;
-    padding:8px 20px;
-    border-radius:10px;
-    color:#151b0e;
-    font-weight:700;
-    border:none;
-}
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown(f"""
-<div class='navbar'>
-    <div class='brand-title'>🌾 CropWise</div>
-
-    <div class='nav-links'>
-        <a href="/">Home</a>
-        <a href="/About">About</a>
-        <a href="/Services">Services</a>
-        <a href="/Contact">Contact</a>
-    </div>
-
-    <button class='signup-btn'>Sign Up</button>
-</div>
-""", unsafe_allow_html=True)
-
-# ------------------ LOGIN FORM ------------------
-st.markdown("""
-<h2 style='text-align:center; font-size:28px; font-weight:700; margin-top:25px; color:var(--text);'>
-    Login to CropWise
-</h2>
-""", unsafe_allow_html=True)
-
-st.write("")  # spacing
-
-# Center the form
-with st.container():
-    st.write("<div style='display:flex; justify-content:center;'>", unsafe_allow_html=True)
-    st.write("<div style='width:420px;'>", unsafe_allow_html=True)
-
-    # Username
-    username = st.text_input(
-        label="",
-        placeholder="Username or Email",
-        label_visibility="collapsed",
-        key="login_username",
-    )
-
-    # Password
-    password = st.text_input(
-        label="",
-        placeholder="Password",
-        type="password",
-        label_visibility="collapsed",
-        key="login_password",
-    )
-
-    # Forgot password
-    st.markdown(
-        "<p style='color:#759550; text-decoration:underline; cursor:pointer; font-size:14px;'>"
-        "Forgot Password?</p>",
-        unsafe_allow_html=True,
-    )
-
-    # Login button
-    login_clicked = st.button(
-        "Login",
-        use_container_width=True,
-        type="primary",
-    )
-
-    if login_clicked:
-        if username.strip() == "" or password.strip() == "":
-            st.error("Please enter both username and password.")
-        else:
-            switch_page("Dashboard")
-
-    # Signup link
-    st.markdown(
-        "<p style='color:#759550; text-align:center; text-decoration:underline; cursor:pointer; font-size:14px;'>"
-        "Don't have an account? Sign Up</p>",
-        unsafe_allow_html=True,
-    )
-
-    st.write("</div></div>", unsafe_allow_html=True)
+st.markdown("</div></div>", unsafe_allow_html=True)

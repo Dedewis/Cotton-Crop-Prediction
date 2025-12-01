@@ -1,190 +1,143 @@
-# pages/Contact_Us.py
+# pages/Contact.py
+
 import streamlit as st
 from utils.theme import apply_theme
 from utils.language import translate, languages
 
-# -----------------------------
-# Init Session State
-# -----------------------------
+# ---------------------------------------------------------
+# MUST BE FIRST
+# ---------------------------------------------------------
+st.set_page_config(page_title="CropWise - Contact Us", layout="centered")
+
+# ---------------------------------------------------------
+# Session State Init
+# ---------------------------------------------------------
 if "theme" not in st.session_state:
     st.session_state.theme = "light"
 
 if "language" not in st.session_state:
     st.session_state.language = "en"
 
-apply_theme(st.session_state.theme)
-
-# -----------------------------
-# Sidebar
-# -----------------------------
-with st.sidebar:
-    st.title("🌾 CropWise")
-
-    st.subheader(translate("language", st.session_state.language))
-    st.session_state.language = st.selectbox(
-        "",
-        list(languages.keys()),
-        index=list(languages.keys()).index(st.session_state.language),
-        format_func=lambda x: languages[x]
-    )
-
-    st.subheader(translate("theme", st.session_state.language))
-    selected_theme = st.radio(
-        "",
-        ["light", "dark"],
-        index=0 if st.session_state.theme == "light" else 1
-    )
-    st.session_state.theme = selected_theme
-
-
-# -----------------------------
-# Page Config
-# -----------------------------
-st.set_page_config(page_title="CropWise - Contact Us", layout="wide")
-
 theme = st.session_state.theme
-is_dark = theme == "dark"
+lang = st.session_state.language
 
-# -----------------------------
-# Global Styles
-# -----------------------------
-st.markdown(
-    f"""
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap');
+# ---------------------------------------------------------
+# Apply Theme
+# ---------------------------------------------------------
+apply_theme(theme)
 
-        html, body, [class*="css"] {{
-            font-family: 'Manrope', sans-serif;
-        }}
-
-        .page-wrap {{
-            max-width: 850px;
-            margin: auto;
-            padding: 30px 20px;
-        }}
-
-        .section-card {{
-            background: {"#0f1115" if is_dark else "#ffffff"};
-            padding: 25px;
-            border-radius: 14px;
-            border: 1px solid {"#2a2f36" if is_dark else "#e8e2d9"};
-            margin-bottom: 25px;
-        }}
-
-        .form-label {{
-            font-weight: 600;
-            margin-bottom: -8px;
-            color: {"#e6edf3" if is_dark else "#1c140d"};
-        }}
-
-        textarea, input {{
-            border-radius: 10px !important;
-            padding: 12px !important;
-        }}
-
-        .header-title {{
-            font-size: 32px;
-            font-weight: 800;
-            color: {"#e6edf3" if is_dark else "#1c140d"};
-        }}
-
-        .header-sub {{
-            margin-top: -10px;
-            font-size: 15px;
-            color: {"#c8b28e" if is_dark else "#9b7b52"};
-        }}
-
-        .info-title {{
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            color: {"#e6edf3" if is_dark else "#1c140d"};
-        }}
-
-        .info-label {{
-            color: {"#c8b28e" if is_dark else "#9b7b52"};
-            font-size: 14px;
-        }}
-
-        .info-value {{
-            color: {"#e6edf3" if is_dark else "#1c140d"};
-            font-size: 16px;
-            font-weight: 500;
-        }}
-    </style>
-    """,
-    unsafe_allow_html=True
+# ---------------------------------------------------------
+# Sidebar Language + Theme
+# ---------------------------------------------------------
+st.sidebar.markdown("### 🌐 Language")
+selected_lang = st.sidebar.selectbox(
+    "",
+    list(languages.keys()),
+    index=list(languages.keys()).index(lang),
 )
+st.session_state.language = selected_lang
+lang = selected_lang
+
+st.sidebar.markdown("### 🎨 Theme")
+selected_theme = st.sidebar.radio("", ["light", "dark"])
+st.session_state.theme = selected_theme
+theme = selected_theme
+
+# ---------------------------------------------------------
+# Styling
+# ---------------------------------------------------------
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Manrope', sans-serif;
+}
+
+.light-bg  { background:#faf9f7; color:#1a1a1a; }
+.dark-bg   { background:#0d1115; color:#e6edf3; }
+
+.light-card {
+    background:white;
+    padding:32px;
+    border-radius:16px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.06);
+}
+.dark-card {
+    background:#111820;
+    padding:32px;
+    border-radius:16px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.25);
+}
+
+input, textarea {
+    border-radius:12px !important;
+    padding:14px !important;
+    font-size:15px !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ---------------------------------------------------------
+# Page Wrapper
+# ---------------------------------------------------------
+wrapper_bg = "dark-bg" if theme == "dark" else "light-bg"
+card_bg = "dark-card" if theme == "dark" else "light-card"
 
 
-# -----------------------------
-# PAGE CONTENT
-# -----------------------------
-st.markdown("<div class='page-wrap'>", unsafe_allow_html=True)
 
-# -----------------------------
-# Header
-# -----------------------------
-st.markdown(
-    f"""
-    <h1 class="header-title">📬 Contact Us</h1>
-    <p class="header-sub">We’re here to help! Reach out for support, questions, or feedback.</p>
-    """,
-    unsafe_allow_html=True
-)
+# ---------------------------------------------------------
+# Title
+# ---------------------------------------------------------
+st.markdown("""
+<div style="text-align:center;">
+    <h1 style="font-weight:800; font-size:32px;">📩 Contact Us</h1>
+    <p style="opacity:0.8; margin-top:-8px;">We're here to help! Reach out anytime.</p>
+</div>
+""", unsafe_allow_html=True)
 
+# ---------------------------------------------------------
+# Input helpers
+# ---------------------------------------------------------
+def labeled_input(label, placeholder="", key="", type="default"):
+    st.markdown(
+        f"<p style='margin-bottom:6px; font-weight:600; font-size:16px;'>{label}</p>",
+        unsafe_allow_html=True
+    )
+    return st.text_input("", placeholder=placeholder, key=key, type=type)
 
-# -----------------------------
+def labeled_area(label, placeholder="", key=""):
+    st.markdown(
+        f"<p style='margin-bottom:6px; font-weight:600; font-size:16px;'>{label}</p>",
+        unsafe_allow_html=True
+    )
+    return st.text_area("", placeholder=placeholder, key=key)
+
+# ---------------------------------------------------------
 # Contact Form Card
-# -----------------------------
-st.markdown("<div class='section-card'>", unsafe_allow_html=True)
-
-with st.form("contact_form"):
-    st.markdown("<p class='form-label'>Your Name</p>", unsafe_allow_html=True)
-    name = st.text_input("", placeholder="Enter your name")
-
-    st.markdown("<p class='form-label'>Your Email</p>", unsafe_allow_html=True)
-    email = st.text_input("", placeholder="Enter your email")
-
-    st.markdown("<p class='form-label'>Subject</p>", unsafe_allow_html=True)
-    subject = st.text_input("", placeholder="Enter the subject")
-
-    st.markdown("<p class='form-label'>Message</p>", unsafe_allow_html=True)
-    message = st.text_area("", placeholder="Enter your message", height=150)
-
-    submitted = st.form_submit_button("📨 Send Message")
-
-    if submitted:
-        if not name or not email or not subject or not message:
-            st.error("⚠ Please fill all fields before sending.")
-        else:
-            st.success("✅ Your message has been sent successfully!")
-
-st.markdown("</div>", unsafe_allow_html=True)
-
-
-# -----------------------------
-# Additional Information Card
-# -----------------------------
-st.markdown("<div class='section-card'>", unsafe_allow_html=True)
-
-st.markdown("<div class='info-title'>📎 Additional Contact Information</div>", unsafe_allow_html=True)
-
+# ---------------------------------------------------------
 st.markdown(
-    f"""
-    <p class="info-label">Email</p>
-    <p class="info-value">support@cropwise.com</p>
-
-    <p class="info-label" style="margin-top:15px;">Phone</p>
-    <p class="info-value">+1 (555) 123-4567</p>
-
-    <p class="info-label" style="margin-top:15px;">Address</p>
-    <p class="info-value">123 AgriTech Lane, Farmville, USA</p>
-    """,
+    f"<div class='{card_bg}' style='max-width:700px; margin:auto;'>",
     unsafe_allow_html=True
 )
 
+name = labeled_input("Full Name", "Enter your full name", "name")
+
+email = labeled_input("Email Address", "Enter your email", "email", type="default")
+
+subject = labeled_input("Subject", "What is this about?", "subject")
+
+message = labeled_area("Message", "Write your message...", "message")
+
+st.write("")
+submit = st.button("Send Message", use_container_width=True)
+
+if submit:
+    if not name or not email or not subject or not message:
+        st.error("Please fill all fields.")
+    else:
+        st.success("Your message has been sent successfully!")
+
 st.markdown("</div>", unsafe_allow_html=True)
 
-# END WRAPPER
 st.markdown("</div>", unsafe_allow_html=True)
